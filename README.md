@@ -29,4 +29,4 @@ nix run github:nixup-io/desk-os
 
 ## Acknowledgements
 
-Desk OS is based on [Linux](https://en.wikipedia.org/wiki/Linux) and [NixOS](https://nixos.org/)
+Desk OS is based on [Linux](https://en.wikipedia.org/wiki/Linux) and [NixOS](https://nixos.org/).
