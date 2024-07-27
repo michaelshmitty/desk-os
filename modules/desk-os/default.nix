@@ -27,8 +27,6 @@
 
   networking.networkmanager.enable = true;
 
-  console.useXkbConfig = true;
-
   # Enable sound with pipewire.
   hardware.pulseaudio.enable = false;
   security.rtkit.enable = true;
@@ -48,17 +46,30 @@
       enable = true;
       extraGSettingsOverrides = ''
         [org.gnome.desktop.background]
-        picture-uri='file://${pkgs.nixos-artwork.wallpapers.mosaic-blue.gnomeFilePath}'
-        picture-options='scaled'
+        picture-uri='file://${pkgs.gnome.gnome-backgrounds}/share/backgrounds/gnome/geometrics-l.jxl'
+        picture-uri-dark='file://${pkgs.gnome.gnome-backgrounds}/share/backgrounds/gnome/geometrics-d.jxl'
+
+        [org.gnome.desktop.screensaver]
+        picture-uri='file://${pkgs.gnome.gnome-backgrounds}/share/backgrounds/gnome/geometrics-l.jxl'
+
+        [org.gnome.desktop.interface]
+        enable-hot-corners=false
+        show-battery-percentage=true
 
         [org.gnome.shell]
-        # Favorite apps in gnome-shell
-        # favorite-apps=['org.gnome.Console.desktop', 'org.gnome.Nautilus.desktop']
-        # Enabled extensions
+        favorite-apps=['firefox.desktop', 'org.gnome.Geary.desktop', 'org.gnome.Calendar.desktop', 'org.gnome.Nautilus.desktop']
         enabled-extensions=['${pkgs.gnomeExtensions.arcmenu.extensionUuid}','${pkgs.gnomeExtensions.dash-to-panel.extensionUuid}']
 
         [org.gnome.mutter]
         edge-tiling=true
+        experimental-features=['scale-monitor-framebuffer']
+
+        [org.gnome.shell.extensions.dash-to-panel]
+        panel-element-positions='{"0":[{"element":"showAppsButton","visible":false,"position":"stackedTL"},{"element":"activitiesButton","visible":false,"position":"stackedTL"},{"element":"leftBox","visible":true,"position":"stackedTL"},{"element":"taskbar","visible":true,"position":"stackedTL"},{"element":"centerBox","visible":true,"position":"stackedBR"},{"element":"rightBox","visible":true,"position":"stackedBR"},{"element":"dateMenu","visible":true,"position":"stackedBR"},{"element":"systemMenu","visible":true,"position":"stackedBR"},{"element":"desktopButton","visible":true,"position":"stackedBR"}]}'
+        hide-overview-on-startup=true
+
+        [org.gnome.shell.extensions.arcmenu]
+        menu-layout='Windows'
       '';
 
       extraGSettingsOverridePackages = [
@@ -81,6 +92,4 @@
     pkgs.gnome-tour
     pkgs.gnome.epiphany
   ];
-
-  system.stateVersion = "24.05"; # Did you read the comment?
 }

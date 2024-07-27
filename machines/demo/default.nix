@@ -32,5 +32,7 @@
       extraGroups = ["networkmanager" "wheel"];
       initialPassword = "demo";
     };
+
+    system.stateVersion = "24.05";
   };
 }
