@@ -10,6 +10,7 @@
       qemu.options = [
         "-enable-kvm"
         "-vga virtio"
+        "-display gtk,full-screen=on,grab-on-hover=on"
       ];
     };
 

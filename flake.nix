@@ -49,6 +49,7 @@
       demo = let
         clean-state-demo = nixpkgsFor.${system}.writeShellScriptBin "run" ''
           ${self.packages.${system}.demo}/bin/run-desk-os-demo-vm
+          # Remove disk image forcing demo VM to start with a clean state every time
           if [ -f ./desk-os-demo.qcow2 ]; then
             rm ./desk-os-demo.qcow2
           fi
