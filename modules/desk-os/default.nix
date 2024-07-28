@@ -39,57 +39,139 @@
 
   i18n.inputMethod.enabled = "ibus";
 
+  programs.dconf.enable = true;
+  programs.dconf.profiles = {
+    user.databases = [
+      {
+        settings = {
+          "org/gnome/desktop/background" = {
+            picture-uri = "file://${pkgs.gnome.gnome-backgrounds}/share/backgrounds/gnome/geometrics-l.jxl";
+            picture-uri-dark = "file://${pkgs.gnome.gnome-backgrounds}/share/backgrounds/gnome/geometrics-d.jxl";
+          };
+
+          "org/gnome/desktop/screensaver" = {
+            picture-uri = "file://${pkgs.gnome.gnome-backgrounds}/share/backgrounds/gnome/geometrics-l.jxl";
+          };
+
+          "org/gnome/desktop/interface" = {
+            enable-hot-corners = false;
+            show-battery-percentage = true;
+          };
+
+          "org/gnome/shell" = {
+            favorite-apps = [
+              "firefox.desktop"
+              "org.gnome.Geary.desktop"
+              "org.gnome.Calendar.desktop"
+              "org.gnome.Nautilus.desktop"
+            ];
+            enabled-extensions = [
+              "${pkgs.gnomeExtensions.appindicator.extensionUuid}"
+              "${pkgs.gnomeExtensions.arcmenu.extensionUuid}"
+              "${pkgs.gnomeExtensions.dash-to-panel.extensionUuid}"
+              "${pkgs.gnomeExtensions.printers.extensionUuid}"
+              "${pkgs.gnomeExtensions.removable-drive-menu.extensionUuid}"
+            ];
+          };
+
+          "org/gnome/mutter" = {
+            edge-tiling = true;
+            experimental-features = ["scale-monitor-framebuffer"];
+          };
+
+          "org/gnome/shell/extensions/dash-to-panel" = {
+            panel-element-positions = builtins.toJSON {
+              "0" = [
+                {
+                  element = "showAppsButton";
+                  visible = false;
+                  position = "stackedTL";
+                }
+                {
+                  element = "activitiesButton";
+                  visible = false;
+                  position = "stackedTL";
+                }
+                {
+                  element = "leftBox";
+                  visible = true;
+                  position = "stackedTL";
+                }
+                {
+                  element = "taskbar";
+                  visible = true;
+                  position = "stackedTL";
+                }
+                {
+                  element = "centerBox";
+                  visible = true;
+                  position = "stackedBR";
+                }
+                {
+                  element = "rightBox";
+                  visible = true;
+                  position = "stackedBR";
+                }
+                {
+                  element = "systemMenu";
+                  visible = true;
+                  position = "stackedBR";
+                }
+                {
+                  element = "dateMenu";
+                  visible = true;
+                  position = "stackedBR";
+                }
+                {
+                  element = "desktopButton";
+                  visible = true;
+                  position = "stackedBR";
+                }
+              ];
+            };
+            hide-overview-on-startup = true;
+          };
+
+          "org/gnome/shell/extensions/arcmenu" = {
+            menu-layout = "Windows";
+            pinned-apps = lib.gvariant.mkArray [
+              [ (lib.gvariant.mkDictionaryEntry "id" "firefox.desktop") ]
+              [ (lib.gvariant.mkDictionaryEntry "id" "org.gnome.Geary.desktop") ]
+              [ (lib.gvariant.mkDictionaryEntry "id" "org.gnome.Calendar.desktop") ]
+              [ (lib.gvariant.mkDictionaryEntry "id" "org.gnome.Nautilus.desktop") ]
+            ];
+          };
+        };
+      }
+    ];
+  };
+
   services.xserver = {
     enable = true;
     displayManager.gdm.enable = true;
-    desktopManager.gnome = {
-      enable = true;
-      extraGSettingsOverrides = ''
-        [org.gnome.desktop.background]
-        picture-uri='file://${pkgs.gnome.gnome-backgrounds}/share/backgrounds/gnome/geometrics-l.jxl'
-        picture-uri-dark='file://${pkgs.gnome.gnome-backgrounds}/share/backgrounds/gnome/geometrics-d.jxl'
-
-        [org.gnome.desktop.screensaver]
-        picture-uri='file://${pkgs.gnome.gnome-backgrounds}/share/backgrounds/gnome/geometrics-l.jxl'
-
-        [org.gnome.desktop.interface]
-        enable-hot-corners=false
-        show-battery-percentage=true
-
-        [org.gnome.shell]
-        favorite-apps=['firefox.desktop', 'org.gnome.Geary.desktop', 'org.gnome.Calendar.desktop', 'org.gnome.Nautilus.desktop']
-        enabled-extensions=['${pkgs.gnomeExtensions.arcmenu.extensionUuid}','${pkgs.gnomeExtensions.dash-to-panel.extensionUuid}']
-
-        [org.gnome.mutter]
-        edge-tiling=true
-        experimental-features=['scale-monitor-framebuffer']
-
-        [org.gnome.shell.extensions.dash-to-panel]
-        panel-element-positions='{"0":[{"element":"showAppsButton","visible":false,"position":"stackedTL"},{"element":"activitiesButton","visible":false,"position":"stackedTL"},{"element":"leftBox","visible":true,"position":"stackedTL"},{"element":"taskbar","visible":true,"position":"stackedTL"},{"element":"centerBox","visible":true,"position":"stackedBR"},{"element":"rightBox","visible":true,"position":"stackedBR"},{"element":"dateMenu","visible":true,"position":"stackedBR"},{"element":"systemMenu","visible":true,"position":"stackedBR"},{"element":"desktopButton","visible":true,"position":"stackedBR"}]}'
-        hide-overview-on-startup=true
-
-        [org.gnome.shell.extensions.arcmenu]
-        menu-layout='Windows'
-      '';
-
-      extraGSettingsOverridePackages = [
-        pkgs.gsettings-desktop-schemas # for org.gnome.desktop
-        pkgs.gnome.gnome-shell # for org.gnome.shell
-        pkgs.gnome.mutter # for org.gnome.mutter
-      ];
-    };
+    desktopManager.gnome.enable = true;
   };
 
   services.udev.packages = with pkgs; [gnome.gnome-settings-daemon];
 
   environment.systemPackages = with pkgs; [
     firefox
+    gnomeExtensions.appindicator
     gnomeExtensions.arcmenu
     gnomeExtensions.dash-to-panel
+    gnomeExtensions.printers
+    gnomeExtensions.removable-drive-menu
   ];
 
   environment.gnome.excludePackages = with pkgs; [
     pkgs.gnome-tour
     pkgs.gnome.epiphany
   ];
+
+  # Fix scaling issues with electron apps
+  environment.sessionVariables.NIXOS_OZONE_WL = "1";
+
+  # Fix theming issues with QT apps
+  environment.sessionVariables.QT_QPA_PLATFORM = "wayland";
+  environment.sessionVariables.QT_QPA_PLATFORMTHEME = "qt5ct";
 }
