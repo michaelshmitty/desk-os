@@ -61,8 +61,6 @@
           "org/gnome/shell" = {
             favorite-apps = [
               "firefox.desktop"
-              "org.gnome.Geary.desktop"
-              "org.gnome.Calendar.desktop"
               "org.gnome.Nautilus.desktop"
             ];
             enabled-extensions = [
@@ -139,6 +137,9 @@
               [ (lib.gvariant.mkDictionaryEntry "id" "org.gnome.Geary.desktop") ]
               [ (lib.gvariant.mkDictionaryEntry "id" "org.gnome.Calendar.desktop") ]
               [ (lib.gvariant.mkDictionaryEntry "id" "org.gnome.Nautilus.desktop") ]
+              [ (lib.gvariant.mkDictionaryEntry "id" "writer.desktop") ]
+              [ (lib.gvariant.mkDictionaryEntry "id" "calc.desktop") ]
+              [ (lib.gvariant.mkDictionaryEntry "id" "impress.desktop") ]
             ];
           };
         };
@@ -161,6 +162,7 @@
     gnomeExtensions.dash-to-panel
     gnomeExtensions.printers
     gnomeExtensions.removable-drive-menu
+    libreoffice
   ];
 
   environment.gnome.excludePackages = with pkgs; [
