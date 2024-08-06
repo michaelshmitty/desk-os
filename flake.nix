@@ -26,6 +26,16 @@
         config.allowUnfree = true;
       });
   in {
+    nixosConfigurations = {
+      installer = nixpkgs.lib.nixosSystem {
+        modules = [
+          "${nixpkgs}/nixos/modules/installer/cd-dvd/channel.nix"
+          ./machines/installer
+        ];
+        specialArgs = {inherit inputs;};
+      };
+    };
+
     packages = forAllSystems (system: let
       pkgs = nixpkgsFor.${system};
     in {
@@ -42,6 +52,23 @@
         .system
         .build
         .vm;
+
+      installer-demo = pkgs.writeShellScript "installer-demo" ''
+        set -euo pipefail
+        disk=installer-demo-root.img
+        ${pkgs.qemu}/bin/qemu-img create -f qcow2 "$disk" 80G
+        ${pkgs.qemu}/bin/qemu-system-x86_64 \
+          -cpu host \
+          -enable-kvm \
+          -m 8G \
+          -vga virtio \
+          -display gtk,full-screen=on,grab-on-hover=on \
+          -bios ${pkgs.OVMF.fd}/FV/OVMF.fd \
+          -cdrom ${self.packages.${system}.installer-iso}/iso/*.iso \
+          -hda "$disk"
+      '';
+
+      installer-iso = inputs.self.nixosConfigurations.installer.config.system.build.isoImage;
     });
 
     apps = forAllSystems (system: {
@@ -57,6 +84,11 @@
       in {
         type = "app";
         program = "${clean-state-demo}/bin/run";
+      };
+
+      installer-demo = {
+        type = "app";
+        program = "${self.packages.${system}.installer-demo}";
       };
     });
 
