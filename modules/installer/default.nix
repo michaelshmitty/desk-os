@@ -13,7 +13,7 @@ in
     (modulesPath + "/profiles/installation-device.nix")
   ];
 
-  boot.loader.timeout = lib.mkForce 1;
+  # boot.loader.timeout = lib.mkForce 0;
 
   # Adds terminus_font for people with HiDPI displays
   console.packages = options.console.packages.default ++ [ pkgs.terminus_font ];
@@ -26,9 +26,6 @@ in
 
   # USB booting
   isoImage.makeUsbBootable = true;
-
-  # Add Memtest86+ to the CD.
-  boot.loader.grub.memtest86.enable = true;
 
   # An installation media cannot tolerate a host config defined file
   # system layout on a fresh machine, before it has been formatted.
