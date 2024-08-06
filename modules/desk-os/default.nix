@@ -171,7 +171,7 @@
   # Fix scaling issues with electron apps
   environment.sessionVariables.NIXOS_OZONE_WL = "1";
 
-  # Fix theming issues with QT apps
-  environment.sessionVariables.QT_QPA_PLATFORM = "wayland";
-  environment.sessionVariables.QT_QPA_PLATFORMTHEME = "qt5ct";
+  # Let QT apps follow Gnome theme settings
+  qt.enable = true;
+  qt.platformTheme = "qt5ct";
 }
