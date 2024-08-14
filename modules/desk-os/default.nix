@@ -176,4 +176,6 @@
   # Let QT apps follow Gnome theme settings
   qt.enable = true;
   qt.platformTheme = "qt5ct";
+
+  services.flatpak.enable = true;
 }
