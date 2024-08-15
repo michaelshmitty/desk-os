@@ -4,6 +4,7 @@ with lib;
 
 let
   calamares-nixos-autostart = pkgs.makeAutostartItem { name = "io.calamares.calamares"; package = pkgs.calamares-nixos; };
+  calamares-extensions-desk-os = pkgs.callPackage ../../packages/calamares-extensions {};
 in
 {
   imports = [
@@ -17,6 +18,9 @@ in
 
   # Adds terminus_font for people with HiDPI displays
   console.packages = options.console.packages.default ++ [ pkgs.terminus_font ];
+
+  # FIXME(m): Disable squashfs compression during development
+  isoImage.squashfsCompression = null;
 
   # ISO naming.
   isoImage.isoName = "${config.isoImage.isoBaseName}-${config.system.nixos.label}-${pkgs.stdenv.hostPlatform.system}.iso";
@@ -103,9 +107,10 @@ in
     libsForQt5.kpmcore
     calamares-nixos
     calamares-nixos-autostart
-    calamares-nixos-extensions
+    calamares-extensions-desk-os
     # Get list of locales
     glibcLocales
+    gnomeExtensions.no-overview
   ];
 
   # Support choosing from any locale
@@ -117,6 +122,7 @@ in
     favoriteAppsOverride = ''
       [org.gnome.shell]
       favorite-apps=[ 'io.calamares.calamares.desktop', 'org.gnome.Nautilus.desktop', 'org.gnome.Console.desktop' ]
+      enabled-extensions=[ '${pkgs.gnomeExtensions.no-overview.extensionUuid}' ]
     '';
 
     # Override GNOME defaults to disable GNOME tour and disable suspend
@@ -142,12 +148,6 @@ in
 
   services.xserver.displayManager.gdm = {
     enable = true;
-    # autoSuspend makes the machine automatically suspend after inactivity.
-    # It's possible someone could/try to ssh'd into the machine and obviously
-    # have issues because it's inactive.
-    # See:
-    # * https://github.com/NixOS/nixpkgs/pull/63790
-    # * https://gitlab.gnome.org/GNOME/gnome-control-center/issues/22
     autoSuspend = false;
   };
 
