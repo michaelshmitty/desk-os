@@ -3,11 +3,16 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.05";
+    nixos-generators = {
+      url = "github:nix-community/nixos-generators";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = {
     self,
     nixpkgs,
+    nixos-generators,
   } @ inputs: let
     supportedSystems = [
       "aarch64-darwin"
@@ -69,6 +74,21 @@
       '';
 
       installer-iso = inputs.self.nixosConfigurations.installer.config.system.build.isoImage;
+
+      installer-image = nixos-generators.nixosGenerate {
+        system = system;
+        specialArgs = {
+          pkgs = pkgs;
+        };
+        modules = [
+          # Pin nixpkgs to the flake input, so that the packages installed
+          # come from the flake inputs.nixpkgs.url.
+          ({ ... }: { nix.registry.nixpkgs.flake = nixpkgs; })
+          # Apply the rest of the config.
+          ./machines/installer-image
+        ];
+        format = "raw-efi";
+      };
     });
 
     apps = forAllSystems (system: {
