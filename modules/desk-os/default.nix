@@ -133,13 +133,13 @@
           "org/gnome/shell/extensions/arcmenu" = {
             menu-layout = "Windows";
             pinned-apps = lib.gvariant.mkArray [
-              [ (lib.gvariant.mkDictionaryEntry "id" "firefox.desktop") ]
-              [ (lib.gvariant.mkDictionaryEntry "id" "org.gnome.Geary.desktop") ]
-              [ (lib.gvariant.mkDictionaryEntry "id" "org.gnome.Calendar.desktop") ]
-              [ (lib.gvariant.mkDictionaryEntry "id" "org.gnome.Nautilus.desktop") ]
-              [ (lib.gvariant.mkDictionaryEntry "id" "writer.desktop") ]
-              [ (lib.gvariant.mkDictionaryEntry "id" "calc.desktop") ]
-              [ (lib.gvariant.mkDictionaryEntry "id" "impress.desktop") ]
+              [(lib.gvariant.mkDictionaryEntry "id" "firefox.desktop")]
+              [(lib.gvariant.mkDictionaryEntry "id" "org.gnome.Geary.desktop")]
+              [(lib.gvariant.mkDictionaryEntry "id" "org.gnome.Calendar.desktop")]
+              [(lib.gvariant.mkDictionaryEntry "id" "org.gnome.Nautilus.desktop")]
+              [(lib.gvariant.mkDictionaryEntry "id" "writer.desktop")]
+              [(lib.gvariant.mkDictionaryEntry "id" "calc.desktop")]
+              [(lib.gvariant.mkDictionaryEntry "id" "impress.desktop")]
             ];
           };
         };

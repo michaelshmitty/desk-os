@@ -1,5 +1,4 @@
-{ stdenv }:
-
+{stdenv}:
 stdenv.mkDerivation {
   pname = "calamares-extensions-desk-os";
   version = "0.0.1";

@@ -1,12 +1,19 @@
-{ config, lib, options, pkgs, inputs, modulesPath, ... }:
-
-with lib;
-
-let
-  calamares-nixos-autostart = pkgs.makeAutostartItem { name = "io.calamares.calamares"; package = pkgs.calamares-nixos; };
-  calamares-extensions-desk-os = pkgs.callPackage ../../packages/calamares-extensions {};
-in
 {
+  config,
+  lib,
+  options,
+  pkgs,
+  inputs,
+  modulesPath,
+  ...
+}:
+with lib; let
+  calamares-nixos-autostart = pkgs.makeAutostartItem {
+    name = "io.calamares.calamares";
+    package = pkgs.calamares-nixos;
+  };
+  calamares-extensions-desk-os = pkgs.callPackage ../../packages/calamares-extensions {};
+in {
   imports = [
     ./iso-image.nix
     (modulesPath + "/profiles/all-hardware.nix")
@@ -17,7 +24,7 @@ in
   # boot.loader.timeout = lib.mkForce 0;
 
   # Adds terminus_font for people with HiDPI displays
-  console.packages = options.console.packages.default ++ [ pkgs.terminus_font ];
+  console.packages = options.console.packages.default ++ [pkgs.terminus_font];
 
   # FIXME(m): Disable squashfs compression during development
   isoImage.squashfsCompression = null;
@@ -33,7 +40,7 @@ in
 
   # An installation media cannot tolerate a host config defined file
   # system layout on a fresh machine, before it has been formatted.
-  swapDevices = mkImageMediaOverride [ ];
+  swapDevices = mkImageMediaOverride [];
   fileSystems = mkImageMediaOverride config.lib.isoFileSystems;
 
   boot.postBootCommands = ''
@@ -114,7 +121,7 @@ in
   ];
 
   # Support choosing from any locale
-  i18n.supportedLocales = [ "all" ];
+  i18n.supportedLocales = ["all"];
 
   isoImage.edition = "gnome";
 
@@ -136,7 +143,7 @@ in
       sleep-inactive-battery-type='nothing'
     '';
 
-    extraGSettingsOverridePackages = [ pkgs.gnome.gnome-settings-daemon ];
+    extraGSettingsOverridePackages = [pkgs.gnome.gnome-settings-daemon];
 
     enable = true;
   };
