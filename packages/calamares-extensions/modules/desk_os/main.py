@@ -8,16 +8,47 @@
 #   Calamares is Free Software: see the License-Identifier above.
 #
 
-import libcalamares
 import os
-import subprocess
 import re
+import secrets
+import subprocess
+
+import libcalamares
 
 import gettext
 _ = gettext.translation("calamares-python",
                         localedir=libcalamares.utils.gettext_path(),
                         languages=libcalamares.utils.gettext_languages(),
                         fallback=True).gettext
+
+def random_hostname():
+    adjectives = [
+        "autumn", "hidden", "bitter", "misty", "silent", "empty", "dry", "dark", "summer",
+        "icy", "delicate", "quiet", "white", "cool", "spring", "winter", "patient",
+        "twilight", "dawn", "crimson", "wispy", "weathered", "blue", "billowing",
+        "broken", "cold", "damp", "falling", "frosty", "green", "long", "late", "lingering",
+        "bold", "little", "morning", "muddy", "old", "red", "rough", "still", "small",
+        "sparkling", "thrumming", "shy", "wandering", "withered", "wild", "black",
+        "young", "holy", "solitary", "fragrant", "aged", "snowy", "proud", "floral",
+        "restless", "divine", "polished", "ancient", "purple", "lively", "nameless"
+    ]
+
+    nouns = [
+        "waterfall", "river", "breeze", "moon", "rain", "wind", "sea", "morning",
+        "snow", "lake", "sunset", "pine", "shadow", "leaf", "dawn", "glitter", "forest",
+        "hill", "cloud", "meadow", "sun", "glade", "bird", "brook", "butterfly",
+        "bush", "dew", "dust", "field", "fire", "flower", "firefly", "feather", "grass",
+        "haze", "mountain", "night", "pond", "darkness", "snowflake", "silence",
+        "sound", "sky", "shape", "surf", "thunder", "violet", "water", "wildflower",
+        "wave", "water", "resonance", "sun", "log", "dream", "cherry", "tree", "fog",
+        "frost", "voice", "paper", "frog", "smoke", "star"
+    ]
+
+    adjective = secrets.choice(adjectives)
+    noun = secrets.choice(nouns)
+    number = secrets.randbelow(10_000)
+
+    return f"{adjective}-{noun}-{number}"
 
 configuration_head = """
 { config, pkgs, ... }:
@@ -33,7 +64,6 @@ configuration_body = """
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
-  networking.hostName = "@@hostname@@";
   networking.networkmanager.enable = true;
 
   services.xserver.enable = true;
@@ -69,6 +99,10 @@ configuration_body = """
   systemd.services."autovt@tty1".enable = false;
 
   nixpkgs.config.allowUnfree = true;
+"""
+
+cfghostname = f"""
+  networking.hostName = "{random_hostname()}";
 """
 
 cfgtime = """
@@ -139,6 +173,7 @@ def catenate(d, key, *values):
 
     d[key] = "".join(values)
 
+
 def run():
     """Desk OS Configuration."""
 
@@ -168,10 +203,7 @@ def run():
     status = _("Configuring Desk OS")
     libcalamares.job.setprogress(0.18)
 
-    if (gs.value("hostname") is None):
-        catenate(variables, "hostname", "desk-os")
-    else:
-        catenate(variables, "hostname", gs.value("hostname"))
+    cfg += cfghostname
 
     if (gs.value("locationRegion") is not None and gs.value("locationZone") is not None):
         cfg += cfgtime
