@@ -115,13 +115,13 @@ navigation: widget
 # are visible as buttons there if the corresponding *show* keys
 # are set to "true" (they can also be overridden).
 strings:
-    productName:         Desk OS
-    shortProductName:    Desk OS
+    productName:         deskOS
+    shortProductName:    deskOS
     version:             
     shortVersion:        
-    versionedName:       Desk OS
-    shortVersionedName:  Desk OS
-    bootloaderEntryName: Desk OS
+    versionedName:       deskOS
+    shortVersionedName:  deskOS
+    bootloaderEntryName: deskOS
     productUrl:          https://nixup.io/
     supportUrl:          https://nixup.io
     knownIssuesUrl:      https://github.com/nixup-io/desk-os/issues

@@ -172,7 +172,7 @@ configuration_tail = """
 """
 
 def pretty_name():
-    return _("Installing Desk OS.")
+    return _("Installing deskOS.")
 
 
 status = pretty_name()
@@ -196,10 +196,10 @@ def catenate(d, key, *values):
 
 
 def run():
-    """Desk OS Configuration."""
+    """deskOS Configuration."""
 
     global status
-    status = _("Configuring Desk OS")
+    status = _("Configuring deskOS")
     libcalamares.job.setprogress(0.1)
 
     # Create initial config file
@@ -223,7 +223,7 @@ def run():
             cfg += """  boot.initrd.luks.devices."{}".device = "/dev/disk/by-uuid/{}";\n""".format(
                 part["luksMapperName"], part["uuid"])
 
-    status = _("Configuring Desk OS")
+    status = _("Configuring deskOS")
     libcalamares.job.setprogress(0.18)
 
     cfg += cfghostname
@@ -334,7 +334,7 @@ def run():
         pattern = "@@{key}@@".format(key=key)
         cfg = cfg.replace(pattern, str(variables[key]))
 
-    status = _("Generating Desk OS configuration")
+    status = _("Generating deskOS configuration")
     libcalamares.job.setprogress(0.25)
 
     try:
@@ -354,7 +354,7 @@ def run():
     libcalamares.utils.host_env_process_output(
         ["cp", "/dev/stdin", flakeFile], None, flake)
 
-    status = _("Installing Desk OS")
+    status = _("Installing deskOS")
     libcalamares.job.setprogress(0.3)
 
     # Install

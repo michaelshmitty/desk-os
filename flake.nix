@@ -1,5 +1,5 @@
 {
-  description = "Desk OS - A simple, general purpose operating system for desktop computers";
+  description = "deskOS - An easy to use, stable desktop operating system";
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.05";
