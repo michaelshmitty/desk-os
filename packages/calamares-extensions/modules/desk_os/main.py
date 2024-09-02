@@ -55,16 +55,22 @@ flake = f"""
 
   inputs = {{
     nixpkgs.url = "github:nixos/nixpkgs/nixos-24.05";
+    desk-os = {{
+      url = "github:nixup-io/desk-os";
+      inputs.nixpkgs.follows = "nixpkgs";
+    }};
   }};
 
   outputs = {{
     self,
     nixpkgs,
+    desk-os,
   }} @ inputs: {{
     nixosConfigurations.{random_hostname} = nixpkgs.lib.nixosSystem {{
       system = "x86_64-linux";
       specialArgs = {{inherit inputs;}};
       modules = [
+        desk-os.nixosModules.desk-os
         ./configuration.nix
       ];
     }};
