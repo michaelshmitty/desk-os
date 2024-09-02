@@ -21,43 +21,64 @@ _ = gettext.translation("calamares-python",
                         languages=libcalamares.utils.gettext_languages(),
                         fallback=True).gettext
 
-def random_hostname():
-    adjectives = [
-        "autumn", "hidden", "bitter", "misty", "silent", "empty", "dry", "dark", "summer",
-        "icy", "delicate", "quiet", "white", "cool", "spring", "winter", "patient",
-        "twilight", "dawn", "crimson", "wispy", "weathered", "blue", "billowing",
-        "broken", "cold", "damp", "falling", "frosty", "green", "long", "late", "lingering",
-        "bold", "little", "morning", "muddy", "old", "red", "rough", "still", "small",
-        "sparkling", "thrumming", "shy", "wandering", "withered", "wild", "black",
-        "young", "holy", "solitary", "fragrant", "aged", "snowy", "proud", "floral",
-        "restless", "divine", "polished", "ancient", "purple", "lively", "nameless"
-    ]
+adjectives = [
+    "autumn", "hidden", "bitter", "misty", "silent", "empty", "dry", "dark", "summer",
+    "icy", "delicate", "quiet", "white", "cool", "spring", "winter", "patient",
+    "twilight", "dawn", "crimson", "wispy", "weathered", "blue", "billowing",
+    "broken", "cold", "damp", "falling", "frosty", "green", "long", "late", "lingering",
+    "bold", "little", "morning", "muddy", "old", "red", "rough", "still", "small",
+    "sparkling", "thrumming", "shy", "wandering", "withered", "wild", "black",
+    "young", "holy", "solitary", "fragrant", "aged", "snowy", "proud", "floral",
+    "restless", "divine", "polished", "ancient", "purple", "lively", "nameless"
+]
 
-    nouns = [
-        "waterfall", "river", "breeze", "moon", "rain", "wind", "sea", "morning",
-        "snow", "lake", "sunset", "pine", "shadow", "leaf", "dawn", "glitter", "forest",
-        "hill", "cloud", "meadow", "sun", "glade", "bird", "brook", "butterfly",
-        "bush", "dew", "dust", "field", "fire", "flower", "firefly", "feather", "grass",
-        "haze", "mountain", "night", "pond", "darkness", "snowflake", "silence",
-        "sound", "sky", "shape", "surf", "thunder", "violet", "water", "wildflower",
-        "wave", "water", "resonance", "sun", "log", "dream", "cherry", "tree", "fog",
-        "frost", "voice", "paper", "frog", "smoke", "star"
-    ]
+nouns = [
+    "waterfall", "river", "breeze", "moon", "rain", "wind", "sea", "morning",
+    "snow", "lake", "sunset", "pine", "shadow", "leaf", "dawn", "glitter", "forest",
+    "hill", "cloud", "meadow", "sun", "glade", "bird", "brook", "butterfly",
+    "bush", "dew", "dust", "field", "fire", "flower", "firefly", "feather", "grass",
+    "haze", "mountain", "night", "pond", "darkness", "snowflake", "silence",
+    "sound", "sky", "shape", "surf", "thunder", "violet", "water", "wildflower",
+    "wave", "water", "resonance", "sun", "log", "dream", "cherry", "tree", "fog",
+    "frost", "voice", "paper", "frog", "smoke", "star"
+]
 
-    adjective = secrets.choice(adjectives)
-    noun = secrets.choice(nouns)
-    number = secrets.randbelow(10_000)
+adjective = secrets.choice(adjectives)
+noun = secrets.choice(nouns)
+number = secrets.randbelow(10_000)
 
-    return f"{adjective}-{noun}-{number}"
+random_hostname = f"{adjective}-{noun}-{number}"
+
+flake = f"""
+{{
+  description = "deskOS flake";
+
+  inputs = {{
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-24.05";
+  }};
+
+  outputs = {{
+    self,
+    nixpkgs,
+  }} @ inputs: {{
+    nixosConfigurations.{random_hostname} = nixpkgs.lib.nixosSystem {{
+      system = "x86_64-linux";
+      specialArgs = {{inherit inputs;}};
+      modules = [
+        ./configuration.nix
+      ];
+    }};
+  }};
+}}
+"""
 
 configuration_head = """
-{ config, pkgs, ... }:
+{ pkgs, lib, inputs, ... }:
 
 {
-  imports =
-    [
-      ./hardware-configuration.nix
-    ];
+  imports = [
+    ./hardware-configuration.nix
+  ];
 """
 
 configuration_body = """
@@ -102,7 +123,7 @@ configuration_body = """
 """
 
 cfghostname = f"""
-  networking.hostName = "{random_hostname()}";
+  networking.hostName = "{random_hostname}";
 """
 
 cfgtime = """
@@ -189,6 +210,8 @@ def run():
     # Setup variables
     root_mount_point = gs.value("rootMountPoint")
     configFile = os.path.join(root_mount_point, "etc/nixos/configuration.nix")
+    flakeFile = os.path.join(root_mount_point, "etc/nixos/flake.nix")
+    flakePath = os.path.join(root_mount_point, "etc/nixos")
 
     # Pick config parts and prepare substitution
 
@@ -327,13 +350,17 @@ def run():
     libcalamares.utils.host_env_process_output(
         ["cp", "/dev/stdin", configFile], None, cfg)
 
+    # Write the flake.nix file
+    libcalamares.utils.host_env_process_output(
+        ["cp", "/dev/stdin", flakeFile], None, flake)
+
     status = _("Installing Desk OS")
     libcalamares.job.setprogress(0.3)
 
     # Install
     try:
         output = ""
-        proc = subprocess.Popen(["pkexec", "nixos-install", "--no-root-passwd", "--root", root_mount_point], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+        proc = subprocess.Popen(["pkexec", "nixos-install", "--no-root-passwd", "--flake", f"{flakePath}#{random_hostname}", "--root", root_mount_point], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
         while True:
             line = proc.stdout.readline().decode("utf-8")
             output += line
