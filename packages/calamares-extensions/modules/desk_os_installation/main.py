@@ -178,7 +178,7 @@ configuration_tail = """
 """
 
 def pretty_name():
-    return _("Installing deskOS.")
+    return _("Installing deskOS")
 
 
 status = pretty_name()
