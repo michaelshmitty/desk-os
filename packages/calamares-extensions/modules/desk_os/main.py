@@ -70,7 +70,7 @@ flake = f"""
       system = "x86_64-linux";
       specialArgs = {{inherit inputs;}};
       modules = [
-        desk-os.nixosModules.desk-os
+        desk-os.nixosModules.default
         ./configuration.nix
       ];
     }};

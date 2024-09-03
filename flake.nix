@@ -41,9 +41,7 @@
       };
     };
 
-    nixosModules = {
-      desk-os = import ./modules/desk-os;
-    };
+    nixosModules.default = import ./modules/desk-os;
 
     packages = forAllSystems (system: let
       pkgs = nixpkgsFor.${system};
