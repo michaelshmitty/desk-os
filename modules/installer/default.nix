@@ -21,7 +21,17 @@ in {
     (modulesPath + "/profiles/installation-device.nix")
   ];
 
-  # boot.loader.timeout = lib.mkForce 0;
+  boot = {
+    consoleLogLevel = 0;
+    kernelParams = ["quiet"];
+    initrd.verbose = false;
+    loader.systemd-boot.enable = true;
+    loader.timeout = lib.mkForce 0;
+    plymouth = {
+      enable = true;
+      theme = "breeze";
+    };
+  };
 
   # Adds terminus_font for people with HiDPI displays
   console.packages = options.console.packages.default ++ [pkgs.terminus_font];
@@ -31,12 +41,6 @@ in {
 
   # ISO naming.
   isoImage.isoName = "${config.isoImage.isoBaseName}-${config.system.nixos.label}-${pkgs.stdenv.hostPlatform.system}.iso";
-
-  # EFI booting
-  isoImage.makeEfiBootable = true;
-
-  # USB booting
-  isoImage.makeUsbBootable = true;
 
   # An installation media cannot tolerate a host config defined file
   # system layout on a fresh machine, before it has been formatted.
@@ -92,9 +96,6 @@ in {
   # The VirtualBox guest additions rely on an out-of-tree kernel module
   # which lags behind kernel releases, potentially causing broken builds.
   virtualisation.virtualbox.guest.enable = false;
-
-  # Enable plymouth
-  boot.plymouth.enable = true;
 
   environment.defaultPackages = with pkgs; [
     # Include gparted for partitioning disks.

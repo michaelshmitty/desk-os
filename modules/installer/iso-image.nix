@@ -566,22 +566,6 @@ in {
       '';
     };
 
-    isoImage.makeEfiBootable = mkOption {
-      default = false;
-      type = lib.types.bool;
-      description = ''
-        Whether the ISO image should be an EFI-bootable volume.
-      '';
-    };
-
-    isoImage.makeUsbBootable = mkOption {
-      default = false;
-      type = lib.types.bool;
-      description = ''
-        Whether the ISO image should be bootable from CD as well as USB.
-      '';
-    };
-
     isoImage.efiSplashImage = mkOption {
       default = pkgs.fetchurl {
         url = "https://raw.githubusercontent.com/NixOS/nixos-artwork/a9e05d7deb38a8e005a2b52575a3f59a63a4dba0/bootloader/efi-background.png";
@@ -827,8 +811,6 @@ in {
           source = "${pkgs.syslinux}/share/syslinux";
           target = "/isolinux";
         }
-      ]
-      ++ optionals config.isoImage.makeEfiBootable [
         {
           source = efiImg;
           target = "/boot/efi.img";
@@ -872,14 +854,12 @@ in {
           else null;
         squashfsContents = config.isoImage.storeContents;
         squashfsCompression = config.isoImage.squashfsCompression;
-      }
-      // optionalAttrs (config.isoImage.makeUsbBootable && config.isoImage.makeBiosBootable) {
-        usbBootable = true;
-        isohybridMbrImage = "${pkgs.syslinux}/share/syslinux/isohdpfx.bin";
-      }
-      // optionalAttrs config.isoImage.makeEfiBootable {
         efiBootable = true;
         efiBootImage = "boot/efi.img";
+      }
+      // optionalAttrs (config.isoImage.makeBiosBootable) {
+        usbBootable = true;
+        isohybridMbrImage = "${pkgs.syslinux}/share/syslinux/isohdpfx.bin";
       });
 
     boot.postBootCommands = ''
