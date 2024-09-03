@@ -20,7 +20,19 @@
     };
   };
 
-  system.autoUpgrade.enable = true;
+  system.autoUpgrade = {
+    enable = true;
+    flake = "/etc/nixos";
+    operation = "boot";
+    randomizedDelaySec = "45min";
+    flags = [
+      "--commit-lock-file"
+      "--update-input"
+      "nixpkgs"
+      "--update-input"
+      "desk-os"
+    ];
+  };
 
   services.printing.enable = true;
   hardware.bluetooth.enable = true;
