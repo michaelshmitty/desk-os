@@ -26,6 +26,7 @@
     operation = "boot";
     randomizedDelaySec = "45min";
     flags = [
+      "--refresh"
       "--commit-lock-file"
       "--update-input"
       "nixpkgs"
