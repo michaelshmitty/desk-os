@@ -16,7 +16,7 @@
     loader.efi.canTouchEfiVariables = true;
     plymouth = {
       enable = true;
-      theme = "spinfinity";
+      theme = "spinner";
     };
   };
 
