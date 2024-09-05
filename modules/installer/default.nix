@@ -31,6 +31,15 @@ in {
       enable = true;
       theme = "breeze";
     };
+
+    # NOTE(m): Enable kernel modules that improve wifi support on
+    # Macbooks during installation.
+    # See https://nixos.org/manual/nixos/stable/#sec-building-image-drivers
+    # FIXME(m): See if this can be cleaned up and go somewhere else and
+    # ensure this doesn't break non-Apple hardware.
+    initrd.kernelModules = [ "wl" ];
+    kernelModules = [ "kvm-intel" "wl" ];
+    extraModulePackages = [config.boot.kernelPackages.broadcom_sta];
   };
 
   # Adds terminus_font for people with HiDPI displays
