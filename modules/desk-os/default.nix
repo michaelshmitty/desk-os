@@ -20,6 +20,8 @@
     };
   };
 
+  system.nixos.distroName = "deskOS";
+
   system.autoUpgrade = {
     enable = true;
     flake = "/etc/nixos";
