@@ -150,6 +150,10 @@ in {
       [org.gnome.settings-daemon.plugins.power]
       sleep-inactive-ac-type='nothing'
       sleep-inactive-battery-type='nothing'
+      [org.gnome.desktop.background]
+      picture-uri='file://${pkgs.gnome.gnome-backgrounds}/share/backgrounds/gnome/geometrics-l.jxl'
+      [org.gnome.desktop.screensaver]
+      picture-uri='file://${pkgs.gnome.gnome-backgrounds}/share/backgrounds/gnome/geometrics-l.jxl'
     '';
 
     extraGSettingsOverridePackages = [pkgs.gnome.gnome-settings-daemon];
