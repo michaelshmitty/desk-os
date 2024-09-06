@@ -80,9 +80,9 @@ def system_dir(profile: str | None, generation: int, specialisation: str | None)
     else:
         return d
 
-BOOT_ENTRY = """title {title} Update {generation}
+BOOT_ENTRY = """title {title}
 sort-key {sort_key}
-version {pretty_build_time}
+version Update {generation} {pretty_build_time}
 linux {kernel}
 initrd {initrd}
 options {kernel_params}
@@ -188,7 +188,7 @@ def write_entry(profile: str | None, generation: int, specialisation: str | None
 
     kernel_params = kernel_params + " ".join(bootspec.kernelParams)
     build_time = int(os.path.getctime(system_dir(profile, generation, specialisation)))
-    pretty_build_time = datetime.datetime.fromtimestamp(build_time).strftime('%x %X')
+    pretty_build_time = datetime.datetime.fromtimestamp(build_time).strftime('%Y-%m-%d %H:%M')
 
     with open(tmp_path, 'w') as f:
         f.write(BOOT_ENTRY.format(title=title,
