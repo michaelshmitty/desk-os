@@ -61,7 +61,6 @@
   };
 
   i18n.inputMethod.enabled = "ibus";
-  i18n.supportedLocales = ["all"];
 
   programs.dconf.enable = true;
   programs.dconf.profiles = {
