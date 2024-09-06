@@ -31,7 +31,7 @@ in {
     loader.timeout = lib.mkForce 0;
     plymouth = {
       enable = true;
-      theme = "breeze";
+      theme = "spinner";
     };
 
     # NOTE(m): Enable kernel modules that improve wifi support on
