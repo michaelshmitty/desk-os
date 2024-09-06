@@ -23,13 +23,19 @@ in {
 
   system.nixos.distroName = "deskOS 1";
 
+  # FIXME(m): Disable squashfs compression during development
+  isoImage.squashfsCompression = null;
+
   boot = {
     consoleLogLevel = 0;
     kernelParams = ["quiet" "splash" "systemd.show_status=auto" "rd.udev.log_level=3"];
     initrd.verbose = false;
     loader.systemd-boot.enable = true;
     loader.timeout = lib.mkForce 0;
-    plymouth.enable = true;
+    plymouth = {
+      enable = true;
+      logo = ../../assets/blank-plymouth-logo.png;
+    };
 
     # NOTE(m): Enable kernel modules that improve wifi support on
     # Macbooks during installation.

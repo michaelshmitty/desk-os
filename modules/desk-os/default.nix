@@ -18,7 +18,10 @@
     loader.systemd-boot.enable = true;
     loader.systemd-boot.configurationLimit = 3;
     loader.efi.canTouchEfiVariables = true;
-    plymouth.enable = true;
+    plymouth = {
+      enable = true;
+      logo = ../../assets/blank-plymouth-logo.png;
+    };
   };
 
   system.nixos.distroName = "deskOS 1";
