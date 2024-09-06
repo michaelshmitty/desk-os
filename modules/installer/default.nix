@@ -21,7 +21,7 @@ in {
     (modulesPath + "/profiles/installation-device.nix")
   ];
 
-  system.nixos.distroName = "deskOS";
+  system.nixos.distroName = "deskOS 1";
 
   boot = {
     consoleLogLevel = 0;

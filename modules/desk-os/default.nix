@@ -24,7 +24,7 @@
     };
   };
 
-  system.nixos.distroName = "deskOS";
+  system.nixos.distroName = "deskOS 1";
 
   system.autoUpgrade = {
     enable = true;
