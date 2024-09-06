@@ -201,4 +201,15 @@
   qt.platformTheme = "qt5ct";
 
   services.flatpak.enable = true;
+  systemd.services.ensure-flathub-remote = {
+    description = "Ensure Flathub is added as a flatpak remote repository";
+    wantedBy = [ "multi-user.target" ];
+    wants = [ "network-online.target" ];
+    after = [ "network-online.target" ];
+    serviceConfig = {
+      Type = "oneshot";
+      User = "root";
+      ExecStart = "${pkgs.flatpak}/bin/flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo";
+    };
+  };
 }
