@@ -29,10 +29,7 @@ in {
     initrd.verbose = false;
     loader.systemd-boot.enable = true;
     loader.timeout = lib.mkForce 0;
-    plymouth = {
-      enable = true;
-      theme = "spinner";
-    };
+    plymouth.enable = true;
 
     # NOTE(m): Enable kernel modules that improve wifi support on
     # Macbooks during installation.
