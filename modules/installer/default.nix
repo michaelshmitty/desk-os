@@ -47,10 +47,7 @@ in {
     initrd.verbose = false;
     loader.systemd-boot.enable = true;
     loader.timeout = lib.mkForce 0;
-    plymouth = {
-      enable = true;
-      logo = ../../assets/blank-plymouth-logo.png;
-    };
+    plymouth.enable = true;
 
     # NOTE(m): Enable kernel modules that improve wifi support on
     # Macbooks during installation.
