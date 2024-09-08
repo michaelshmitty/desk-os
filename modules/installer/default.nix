@@ -117,7 +117,10 @@ in {
   services.spice-vdagentd.enable = true;
   services.qemuGuest.enable = true;
   virtualisation.vmware.guest.enable = pkgs.stdenv.hostPlatform.isx86;
-  virtualisation.hypervGuest.enable = true;
+  # NOTE(m): Silence noisy hyper-v kernel modules by disabling hyper-V guest
+  # FIXME(m): Find a better way like figure out how to prevent log messages from
+  # appearing at boot even more than already done above.
+  virtualisation.hypervGuest.enable = false;
   services.xe-guest-utilities.enable = pkgs.stdenv.hostPlatform.isx86;
   # The VirtualBox guest additions rely on an out-of-tree kernel module
   # which lags behind kernel releases, potentially causing broken builds.
