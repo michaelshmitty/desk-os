@@ -62,9 +62,6 @@ in {
     extraModulePackages = [config.boot.kernelPackages.broadcom_sta];
   };
 
-  # Adds terminus_font for people with HiDPI displays
-  console.packages = options.console.packages.default ++ [pkgs.terminus_font];
-
   # ISO naming.
   isoImage.isoName = "${config.isoImage.isoBaseName}-${config.system.nixos.label}-${pkgs.stdenv.hostPlatform.system}.iso";
 
@@ -106,13 +103,6 @@ in {
   networking.networkmanager.enable = true;
   networking.wireless.enable = mkImageMediaOverride false;
 
-  # KDE complains if power management is disabled (to be precise, if
-  # there is no power management backend such as upower).
-  powerManagement.enable = true;
-
-  # Enable sound in graphical iso's.
-  hardware.pulseaudio.enable = true;
-
   # VM guest additions to improve host-guest interaction
   services.spice-vdagentd.enable = true;
   services.qemuGuest.enable = true;
@@ -125,19 +115,6 @@ in {
   # The VirtualBox guest additions rely on an out-of-tree kernel module
   # which lags behind kernel releases, potentially causing broken builds.
   virtualisation.virtualbox.guest.enable = false;
-
-  environment.defaultPackages = with pkgs; [
-    # Include gparted for partitioning disks.
-    gparted
-
-    # Include some editors.
-    vim
-    nano
-
-    # Include some version control tools.
-    git
-    rsync
-  ];
 
   environment.systemPackages = with pkgs; [
     # Calamares for graphical installation
