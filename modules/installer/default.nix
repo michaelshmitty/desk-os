@@ -24,7 +24,7 @@ in {
   system.nixos.distroName = "deskOS 1";
 
   # FIXME(m): Disable squashfs compression during development
-  isoImage.squashfsCompression = null;
+  # isoImage.squashfsCompression = null;
 
   boot = {
     consoleLogLevel = 0;
