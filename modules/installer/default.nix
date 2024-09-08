@@ -100,6 +100,10 @@ in {
   networking.networkmanager.enable = true;
   networking.wireless.enable = mkImageMediaOverride false;
 
+  # KDE complains if power management is disabled (to be precise, if
+  # there is no power management backend such as upower).
+  powerManagement.enable = true;
+
   # VM guest additions to improve host-guest interaction
   services.spice-vdagentd.enable = true;
   services.qemuGuest.enable = true;
