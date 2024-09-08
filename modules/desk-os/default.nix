@@ -203,9 +203,9 @@
   services.flatpak.enable = true;
   systemd.services.ensure-flathub-remote = {
     description = "Ensure Flathub is added as a flatpak remote repository";
-    wantedBy = [ "multi-user.target" ];
-    wants = [ "network-online.target" ];
-    after = [ "network-online.target" ];
+    wantedBy = ["multi-user.target"];
+    wants = ["network-online.target"];
+    after = ["network-online.target"];
     serviceConfig = {
       Type = "oneshot";
       User = "root";

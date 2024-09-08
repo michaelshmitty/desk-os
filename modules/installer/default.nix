@@ -42,8 +42,8 @@ in {
     # See https://nixos.org/manual/nixos/stable/#sec-building-image-drivers
     # FIXME(m): See if this can be cleaned up and go somewhere else and
     # ensure this doesn't break non-Apple hardware.
-    initrd.kernelModules = [ "wl" ];
-    kernelModules = [ "kvm-intel" "wl" ];
+    initrd.kernelModules = ["wl"];
+    kernelModules = ["kvm-intel" "wl"];
     extraModulePackages = [config.boot.kernelPackages.broadcom_sta];
   };
 

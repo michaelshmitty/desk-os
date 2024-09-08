@@ -1,8 +1,10 @@
-{ config, lib, pkgs, ... }:
-
-with lib;
-
-let
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
+with lib; let
   cfg = config.boot.loader.systemd-boot;
 
   efi = config.boot.loader.efi;
@@ -10,16 +12,17 @@ let
   # We check the source code in a derivation that does not depend on the
   # system configuration so that most users don't have to redo the check and require
   # the necessary dependencies.
-  checkedSource = pkgs.runCommand "systemd-boot" {
-    preferLocalBuild = true;
-  } ''
-    install -m755 -D ${./systemd-boot-builder.py} $out
-    ${lib.getExe pkgs.buildPackages.mypy} \
-      --no-implicit-optional \
-      --disallow-untyped-calls \
-      --disallow-untyped-defs \
-      $out
-  '';
+  checkedSource =
+    pkgs.runCommand "systemd-boot" {
+      preferLocalBuild = true;
+    } ''
+      install -m755 -D ${./systemd-boot-builder.py} $out
+      ${lib.getExe pkgs.buildPackages.mypy} \
+        --no-implicit-optional \
+        --disallow-untyped-calls \
+        --disallow-untyped-defs \
+        $out
+    '';
 
   systemdBootBuilder = pkgs.substituteAll rec {
     name = "systemd-boot";
@@ -36,15 +39,22 @@ let
 
     nix = config.nix.package.out;
 
-    timeout = if config.boot.loader.timeout == null then "menu-force" else config.boot.loader.timeout;
+    timeout =
+      if config.boot.loader.timeout == null
+      then "menu-force"
+      else config.boot.loader.timeout;
 
-    configurationLimit = if cfg.configurationLimit == null then 0 else cfg.configurationLimit;
+    configurationLimit =
+      if cfg.configurationLimit == null
+      then 0
+      else cfg.configurationLimit;
 
     inherit (cfg) consoleMode graceful editor rebootForBitlocker;
 
     inherit (efi) efiSysMountPoint canTouchEfiVariables;
 
-    bootMountPoint = if cfg.xbootldrMountPoint != null
+    bootMountPoint =
+      if cfg.xbootldrMountPoint != null
       then cfg.xbootldrMountPoint
       else efi.efiSysMountPoint;
 
@@ -71,14 +81,16 @@ let
       empty_file=$(${pkgs.coreutils}/bin/mktemp)
 
       ${concatStrings (mapAttrsToList (n: v: ''
-        ${pkgs.coreutils}/bin/install -Dp "${v}" "${bootMountPoint}/"${escapeShellArg n}
-        ${pkgs.coreutils}/bin/install -D $empty_file "${bootMountPoint}/${nixosDir}/.extra-files/"${escapeShellArg n}
-      '') cfg.extraFiles)}
+          ${pkgs.coreutils}/bin/install -Dp "${v}" "${bootMountPoint}/"${escapeShellArg n}
+          ${pkgs.coreutils}/bin/install -D $empty_file "${bootMountPoint}/${nixosDir}/.extra-files/"${escapeShellArg n}
+        '')
+        cfg.extraFiles)}
 
       ${concatStrings (mapAttrsToList (n: v: ''
-        ${pkgs.coreutils}/bin/install -Dp "${pkgs.writeText n v}" "${bootMountPoint}/loader/entries/"${escapeShellArg n}
-        ${pkgs.coreutils}/bin/install -D $empty_file "${bootMountPoint}/${nixosDir}/.extra-files/loader/entries/"${escapeShellArg n}
-      '') cfg.extraEntries)}
+          ${pkgs.coreutils}/bin/install -Dp "${pkgs.writeText n v}" "${bootMountPoint}/loader/entries/"${escapeShellArg n}
+          ${pkgs.coreutils}/bin/install -D $empty_file "${bootMountPoint}/${nixosDir}/.extra-files/loader/entries/"${escapeShellArg n}
+        '')
+        cfg.extraEntries)}
     '';
   };
 
@@ -90,8 +102,8 @@ let
 in {
   # NOTE(m): This module overrides the default NixOS systemd-boot module to include
   # a custom systemd-boot-builder.py script that generates more user friendly bootloader entries
-  disabledModules = [ "system/boot/loader/systemd-boot/systemd-boot.nix" ];
-  meta.maintainers = with lib.maintainers; [ michaelshmitty ];
+  disabledModules = ["system/boot/loader/systemd-boot/systemd-boot.nix"];
+  meta.maintainers = with lib.maintainers; [michaelshmitty];
 
   options.boot.loader.systemd-boot = {
     enable = mkOption {
@@ -202,7 +214,7 @@ in {
     consoleMode = mkOption {
       default = "keep";
 
-      type = types.enum [ "0" "1" "2" "auto" "max" "keep" ];
+      type = types.enum ["0" "1" "2" "auto" "max" "keep"];
 
       description = ''
         The resolution of the console. The following values are valid:
@@ -335,37 +347,39 @@ in {
   };
 
   config = mkIf cfg.enable {
-    assertions = [
-      {
-        assertion = (hasPrefix "/" efi.efiSysMountPoint);
-        message = "The ESP mount point '${toString efi.efiSysMountPoint}' must be an absolute path";
-      }
-      {
-        assertion = cfg.xbootldrMountPoint == null || (hasPrefix "/" cfg.xbootldrMountPoint);
-        message = "The XBOOTLDR mount point '${toString cfg.xbootldrMountPoint}' must be an absolute path";
-      }
-      {
-        assertion = cfg.xbootldrMountPoint != efi.efiSysMountPoint;
-        message = "The XBOOTLDR mount point '${toString cfg.xbootldrMountPoint}' cannot be the same as the ESP mount point '${toString efi.efiSysMountPoint}'";
-      }
-      {
-        assertion = (config.boot.kernelPackages.kernel.features or { efiBootStub = true; }) ? efiBootStub;
-        message = "This kernel does not support the EFI boot stub";
-      }
-      {
-        assertion = cfg.installDeviceTree -> config.hardware.deviceTree.enable -> config.hardware.deviceTree.name != null;
-        message = "Cannot install devicetree without 'config.hardware.deviceTree.enable' enabled and 'config.hardware.deviceTree.name' set";
-      }
-    ] ++ concatMap (filename: [
-      {
-        assertion = !(hasInfix "/" filename);
-        message = "boot.loader.systemd-boot.extraEntries.${lib.strings.escapeNixIdentifier filename} is invalid: entries within folders are not supported";
-      }
-      {
-        assertion = hasSuffix ".conf" filename;
-        message = "boot.loader.systemd-boot.extraEntries.${lib.strings.escapeNixIdentifier filename} is invalid: entries must have a .conf file extension";
-      }
-    ]) (builtins.attrNames cfg.extraEntries)
+    assertions =
+      [
+        {
+          assertion = hasPrefix "/" efi.efiSysMountPoint;
+          message = "The ESP mount point '${toString efi.efiSysMountPoint}' must be an absolute path";
+        }
+        {
+          assertion = cfg.xbootldrMountPoint == null || (hasPrefix "/" cfg.xbootldrMountPoint);
+          message = "The XBOOTLDR mount point '${toString cfg.xbootldrMountPoint}' must be an absolute path";
+        }
+        {
+          assertion = cfg.xbootldrMountPoint != efi.efiSysMountPoint;
+          message = "The XBOOTLDR mount point '${toString cfg.xbootldrMountPoint}' cannot be the same as the ESP mount point '${toString efi.efiSysMountPoint}'";
+        }
+        {
+          assertion = (config.boot.kernelPackages.kernel.features or {efiBootStub = true;}) ? efiBootStub;
+          message = "This kernel does not support the EFI boot stub";
+        }
+        {
+          assertion = cfg.installDeviceTree -> config.hardware.deviceTree.enable -> config.hardware.deviceTree.name != null;
+          message = "Cannot install devicetree without 'config.hardware.deviceTree.enable' enabled and 'config.hardware.deviceTree.name' set";
+        }
+      ]
+      ++ concatMap (filename: [
+        {
+          assertion = !(hasInfix "/" filename);
+          message = "boot.loader.systemd-boot.extraEntries.${lib.strings.escapeNixIdentifier filename} is invalid: entries within folders are not supported";
+        }
+        {
+          assertion = hasSuffix ".conf" filename;
+          message = "boot.loader.systemd-boot.extraEntries.${lib.strings.escapeNixIdentifier filename} is invalid: entries must have a .conf file extension";
+        }
+      ]) (builtins.attrNames cfg.extraEntries)
       ++ concatMap (filename: [
         {
           assertion = !(hasPrefix "/" filename);
