@@ -3,3 +3,5 @@ result
 .direnv
 *.qcow2
 *.img
+desk-os-demo-efi-vars.fd
+

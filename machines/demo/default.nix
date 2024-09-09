@@ -7,6 +7,8 @@
   config = {
     virtualisation = {
       memorySize = 8192;
+      useBootLoader = true;
+      useEFIBoot = true;
       qemu.options = [
         "-enable-kvm"
         "-vga virtio"
