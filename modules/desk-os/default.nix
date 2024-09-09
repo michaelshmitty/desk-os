@@ -90,6 +90,7 @@
               "${pkgs.gnomeExtensions.appindicator.extensionUuid}"
               "${pkgs.gnomeExtensions.arcmenu.extensionUuid}"
               "${pkgs.gnomeExtensions.dash-to-panel.extensionUuid}"
+              "${pkgs.gnomeExtensions.gtk4-desktop-icons-ng-ding.extensionUuid}"
               "${pkgs.gnomeExtensions.printers.extensionUuid}"
               "${pkgs.gnomeExtensions.removable-drive-menu.extensionUuid}"
             ];
@@ -165,6 +166,10 @@
               [(lib.gvariant.mkDictionaryEntry "id" "impress.desktop")]
             ];
           };
+
+          "org/gnome/shell/extensions/gtk4-ding" = {
+            icon-size = "small";
+          };
         };
       }
     ];
@@ -183,6 +188,7 @@
     gnomeExtensions.appindicator
     gnomeExtensions.arcmenu
     gnomeExtensions.dash-to-panel
+    gnomeExtensions.gtk4-desktop-icons-ng-ding
     gnomeExtensions.printers
     gnomeExtensions.removable-drive-menu
     libreoffice
