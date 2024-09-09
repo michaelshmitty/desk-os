@@ -1,14 +1,14 @@
 ---
 name: Report a bug
-about: Create a report to help us improve deskOS
+about: Create a problem report to help us improve deskOS
 title: ""
 labels: bug
 ---
 
-<!--- Before you submit, make sure to check the following that there are no similar issues reported yet --->
+<!--- Before you submit, make sure to check if the problem hasn't been reported already --->
 
-**Describe the issue**
-A clear and concise description of what the issue is.
+**Describe the problem**
+A clear and concise description of what the problem is.
 
 **To Reproduce**
 Steps to reproduce the behavior:
