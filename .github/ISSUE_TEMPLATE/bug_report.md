@@ -1,5 +1,5 @@
 ---
-name: Report an issue
+name: Report a bug
 about: Create a report to help us improve deskOS
 title: ""
 labels: bug
