@@ -2,7 +2,7 @@
 
 ## Installation
 
-1. Download the latest [deskOS installation ISO](https://github.com/nixup-io/desk-os/releases/download/v1.0.0/desk-os-v1.0.0-installer.iso)
+1. Download the latest [deskOS installation ISO](https://files.nixup.io/desk-os/releases/desk-os-1/nixup-desk-os-1-installer-09-09-2024.iso)
 
 2. Flash it to a suitable USB drive
 
@@ -10,7 +10,7 @@
 
 **Notes**
 
-- The installation ISO assumes you are booting with UEFI and will partition the destination disk with GPT and enable full disk encryption (LUKS).
+- deskOS is made for modern hardware and expects UEFI
 
 ## Run a deskOS demo in a virtual machine
 
