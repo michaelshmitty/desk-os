@@ -1,20 +1,10 @@
 # deskOS - An easy to use, stable desktop operating system
 
-## Installation
-
-1. Download the latest [deskOS installation ISO](https://files.nixup.io/desk-os/releases/desk-os-1/nixup-desk-os-1-installer-09-09-2024.iso)
-
-2. Flash it to a suitable USB drive
-
-3. Boot it and follow the installation instructions
-
-**Notes**
-
-- deskOS is made for modern hardware and expects UEFI
+See https://nixup.io/desk-os/learn-more
 
 ## Run a deskOS demo in a virtual machine
 
-This assumes you're running NixOS or another Linux distribution and have the [Nix package manager](https://nixos.org/) installed.
+If you are running NixOS or you have the [Nix package manager](https://nixos.org/) installed, you can easily run a deskOS demo from this flake:
 
 ```sh
 nix run github:nixup-io/desk-os
