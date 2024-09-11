@@ -20,7 +20,8 @@
     loader.efi.canTouchEfiVariables = true;
     plymouth = {
       enable = true;
-      logo = ../../assets/blank-plymouth-logo.png;
+      theme = "desk-os";
+      themePackages = [ (pkgs.callPackage ../../packages/desk-os-plymouth {}) ];
     };
   };
 

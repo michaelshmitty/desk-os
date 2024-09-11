@@ -1,0 +1,8 @@
+[Plymouth Theme]
+Name=deskOS
+Description=A theme that displays the deskOS logo
+ModuleName=script
+
+[script]
+ImageDir=/usr/share/plymouth/themes/desk-os
+ScriptFile=/usr/share/plymouth/themes/desk-os/desk-os.script

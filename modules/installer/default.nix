@@ -47,8 +47,11 @@ in {
     initrd.verbose = false;
     loader.systemd-boot.enable = true;
     loader.timeout = lib.mkForce 0;
-    plymouth.enable = true;
-
+    plymouth = {
+      enable = true;
+      theme = "desk-os";
+      themePackages = [ (pkgs.callPackage ../../packages/desk-os-plymouth {}) ];
+    };
     # NOTE(m): Enable kernel modules that improve wifi support on
     # Macbooks during installation.
     # See https://nixos.org/manual/nixos/stable/#sec-building-image-drivers
