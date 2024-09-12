@@ -43,8 +43,8 @@ in {
     loader.timeout = lib.mkForce 0;
     plymouth = {
       enable = true;
-      theme = "desk-os";
-      themePackages = [(pkgs.callPackage ../../packages/desk-os-plymouth {})];
+      theme = "desk-os-installer";
+      themePackages = [(pkgs.callPackage ../../packages/desk-os-installer-plymouth {})];
     };
     # NOTE(m): Enable kernel modules that improve wifi support on
     # Macbooks during installation.
