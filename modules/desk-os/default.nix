@@ -99,6 +99,7 @@
               "${pkgs.gnomeExtensions.arcmenu.extensionUuid}"
               "${pkgs.gnomeExtensions.dash-to-panel.extensionUuid}"
               "${pkgs.gnomeExtensions.gtk4-desktop-icons-ng-ding.extensionUuid}"
+              "${pkgs.gnomeExtensions.just-perfection.extensionUuid}"
               "${pkgs.gnomeExtensions.printers.extensionUuid}"
               "${pkgs.gnomeExtensions.removable-drive-menu.extensionUuid}"
             ];
@@ -178,6 +179,11 @@
           "org/gnome/shell/extensions/gtk4-ding" = {
             icon-size = "small";
           };
+
+          "org/gnome/shell/extensions/just-perfection" = {
+            startup-status = lib.gvariant.mkInt32 0;
+            power-icon = false;
+          };
         };
       }
     ];
@@ -197,6 +203,7 @@
     gnomeExtensions.arcmenu
     gnomeExtensions.dash-to-panel
     gnomeExtensions.gtk4-desktop-icons-ng-ding
+    gnomeExtensions.just-perfection
     gnomeExtensions.printers
     gnomeExtensions.removable-drive-menu
     libreoffice
