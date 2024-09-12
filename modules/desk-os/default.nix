@@ -21,7 +21,7 @@
     plymouth = {
       enable = true;
       theme = "desk-os";
-      themePackages = [ (pkgs.callPackage ../../packages/desk-os-plymouth {}) ];
+      themePackages = [(pkgs.callPackage ../../packages/desk-os-plymouth {})];
     };
   };
 

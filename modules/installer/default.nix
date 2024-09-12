@@ -39,7 +39,7 @@ in {
   system.nixos.distroName = "deskOS 1";
 
   # FIXME(m): Disable squashfs compression during development
-  # isoImage.squashfsCompression = null;
+  isoImage.squashfsCompression = null;
 
   boot = {
     consoleLogLevel = 0;
@@ -50,7 +50,7 @@ in {
     plymouth = {
       enable = true;
       theme = "desk-os";
-      themePackages = [ (pkgs.callPackage ../../packages/desk-os-plymouth {}) ];
+      themePackages = [(pkgs.callPackage ../../packages/desk-os-plymouth {})];
     };
     # NOTE(m): Enable kernel modules that improve wifi support on
     # Macbooks during installation.
