@@ -42,6 +42,13 @@
     ];
   };
 
+  # Automatic garbage collection
+  nix.gc = {
+    automatic = true;
+    dates = "daily";
+    options = "--delete-older-than 7d";
+  };
+
   services.printing.enable = true;
   hardware.bluetooth.enable = true;
   services.avahi = {
