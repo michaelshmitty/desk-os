@@ -1,0 +1,30 @@
+diff --git a/src/modules/finished/FinishedPage.cpp b/src/modules/finished/FinishedPage.cpp
+index 3076072..4345575 100644
+--- a/src/modules/finished/FinishedPage.cpp
++++ b/src/modules/finished/FinishedPage.cpp
+@@ -74,10 +74,7 @@ FinishedPage::retranslate()
+         {
+             ui->mainText->setText( tr( "<h1>All done.</h1><br/>"
+                                        "%1 has been set up on your computer.<br/>"
+-                                       "You may now start using your new system.<br/>"
+-                                       "You can change every setting later except the bootloader.<br/>"
+-                                       "Check the <a href=\"https://nixos.org/manual/nixos/stable/\">manual</a> for instructions on how to install software, upgrade the system or enable services.<br/>"
+-                                       "You can find ways to get in touch with the <a href=\"https://nixos.org/community/\">community on the website!</a>", "@info" )
++                                       "You can now start using your new system.<br/>", "@info" )
+                                        .arg( branding->versionedName() ) );
+             ui->restartCheckBox->setToolTip( tr( "<html><head/><body>"
+                                                  "<p>When this box is checked, your system will "
+@@ -90,11 +87,8 @@ FinishedPage::retranslate()
+         {
+             ui->mainText->setText( tr( "<h1>All done.</h1><br/>"
+                                        "%1 has been installed on your computer.<br/>"
+-                                       "You may now restart into your new system, or continue "
+-                                       "using the %2 Live environment.<br/>"
+-                                       "You can change every setting later except the bootloader.<br/>"
+-                                       "Check the <a href=\"https://nixos.org/manual/nixos/stable/\">manual</a> for instructions on how to install software, upgrade the system or enable services.<br/>"
+-                                       "You can find ways to get in touch with the <a href=\"https://nixos.org/community/\">community on the website!</a>", "@info" )
++                                       "After you click \"Done\" your computer will restart into your new system and "
++                                       "you can start using it.<br/>", "@info" )
+                                        .arg( branding->versionedName(), branding->productName() ) );
+             ui->restartCheckBox->setToolTip( tr( "<html><head/><body>"
+                                                  "<p>When this box is checked, your system will "

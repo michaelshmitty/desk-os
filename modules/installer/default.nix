@@ -9,19 +9,11 @@
 }:
 with lib; let
   calamares-desk-os = lowPrio (
-    (pkgs.calamares.override {nixos-extensions = true;})
-    .overrideAttrs {
-      patches = [
-        ../../packages/calamares/0001-Modifies-the-users-module-to-only-set-passwords-of-u.patch
-        ../../packages/calamares/0002-Makes-calamares-search-run-current-system-sw-share-c.patch
-        ../../packages/calamares/0003-Uses-pkexec-within-modules-in-order-to-run-calamares.patch
-        ../../packages/calamares/0004-Adds-unfree-qml-to-packagechooserq.patch
-        ../../packages/calamares/0005-Modifies-finished-module-to-add-some-NixOS-resources.patch
-        ../../packages/calamares/0006-Remove-options-for-unsupported-partition-types.patch
-        ../../packages/calamares/0007-Fix-setting-the-kayboard-layout-on-GNOME-wayland.patch
-        ../../packages/calamares/0008-Change-default-location-where-calamares-searches-for.patch
+    pkgs.calamares-nixos.overrideAttrs (previousAttrs: {
+      patches = previousAttrs.patches ++ [
+        ../../packages/calamares-nixos/0001-Updates-finished-module-for-desk-os.patch
       ];
-    }
+    })
   );
   calamares-extensions-desk-os = pkgs.callPackage ../../packages/calamares-extensions {};
   calamares-nixos-autostart = pkgs.makeAutostartItem {
