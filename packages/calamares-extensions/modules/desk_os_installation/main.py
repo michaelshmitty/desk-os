@@ -178,7 +178,7 @@ configuration_tail = """
 """
 
 def pretty_name():
-    return _("Installing deskOS")
+    return _("Installing deskOS (this can take a while depending on your Internet speed)...")
 
 
 status = pretty_name()
@@ -206,7 +206,6 @@ def run():
 
     global status
     status = _("Configuring deskOS")
-    libcalamares.job.setprogress(0.1)
 
     # Create initial config file
     cfg = configuration_head
@@ -230,7 +229,6 @@ def run():
                 part["luksMapperName"], part["uuid"])
 
     status = _("Configuring deskOS")
-    libcalamares.job.setprogress(0.18)
 
     cfg += cfghostname
 
@@ -341,7 +339,6 @@ def run():
         cfg = cfg.replace(pattern, str(variables[key]))
 
     status = _("Generating deskOS configuration")
-    libcalamares.job.setprogress(0.25)
 
     try:
         # Generate hardware.nix with mounted swap device
@@ -360,17 +357,25 @@ def run():
     libcalamares.utils.host_env_process_output(
         ["cp", "/dev/stdin", flakeFile], None, flake)
 
-    status = _("Installing deskOS")
-    libcalamares.job.setprogress(0.3)
+    status = _("Installing deskOS (this can take a while depending on your Internet speed)...")
 
     # Install
     try:
         output = ""
         proc = subprocess.Popen(["pkexec", "nixos-install", "--no-root-passwd", "--flake", f"{flakePath}#{random_hostname}", "--root", root_mount_point], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+        ESTIMATED_TOTAL_LINE_COUNT = 3500
+        line_count = 1
         while True:
             line = proc.stdout.readline().decode("utf-8")
             output += line
+            line_count += 1
             libcalamares.utils.debug("nixos-install: {}".format(line.strip()))
+            # NOTE(m): This is a bit of a fabrication but at least it shows the
+            # user *some* form of progress rather than having the progress bar sit at
+            # some 40-odd percentage for the entirety of this job.
+            progress = line_count / ESTIMATED_TOTAL_LINE_COUNT
+            if progress < 1.0:
+                libcalamares.job.setprogress(progress)
             if not line:
                 break
         exit = proc.wait()
