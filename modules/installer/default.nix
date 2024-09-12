@@ -10,9 +10,11 @@
 with lib; let
   calamares-desk-os = lowPrio (
     pkgs.calamares-nixos.overrideAttrs (previousAttrs: {
-      patches = previousAttrs.patches ++ [
-        ../../packages/calamares-nixos/0001-Updates-finished-module-for-desk-os.patch
-      ];
+      patches =
+        previousAttrs.patches
+        ++ [
+          ../../packages/calamares-nixos/0001-Updates-finished-module-for-desk-os.patch
+        ];
     })
   );
   calamares-extensions-desk-os = pkgs.callPackage ../../packages/calamares-extensions {};
@@ -31,7 +33,7 @@ in {
   system.nixos.distroName = "deskOS 1";
 
   # FIXME(m): Disable squashfs compression during development
-  isoImage.squashfsCompression = null;
+  # isoImage.squashfsCompression = null;
 
   boot = {
     consoleLogLevel = 0;
