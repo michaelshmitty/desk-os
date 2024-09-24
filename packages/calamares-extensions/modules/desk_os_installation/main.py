@@ -121,10 +121,6 @@ configuration_body = """
     user = "@@username@@";
   };
 
-  # Workaround for GNOME autologin: https://github.com/NixOS/nixpkgs/issues/103746#issuecomment-945091229
-  systemd.services."getty@tty1".enable = false;
-  systemd.services."autovt@tty1".enable = false;
-
   nixpkgs.config.allowUnfree = true;
 """
 
@@ -159,10 +155,6 @@ cfgkeymap = """
     layout = "@@kblayout@@";
     variant = "@@kbvariant@@";
   };
-"""
-
-cfgconsole = """
-  console.keyMap = "@@vconsole@@";
 """
 
 configuration_tail = """
@@ -250,58 +242,6 @@ def run():
         cfg += cfgkeymap
         catenate(variables, "kblayout", gs.value("keyboardLayout"))
         catenate(variables, "kbvariant", gs.value("keyboardVariant"))
-
-        if (gs.value("keyboardVConsoleKeymap") is not None):
-            try:
-                subprocess.check_output(["pkexec", "loadkeys", gs.value(
-                    "keyboardVConsoleKeymap").strip()], stderr=subprocess.STDOUT)
-                cfg += cfgconsole
-                catenate(variables, "vconsole", gs.value(
-                    "keyboardVConsoleKeymap").strip())
-            except subprocess.CalledProcessError as e:
-                libcalamares.utils.error("loadkeys: {}".format(e.output))
-                libcalamares.utils.error("Setting vconsole keymap to {} will fail, using default".format(
-                    gs.value("keyboardVConsoleKeymap").strip()))
-        else:
-            kbdmodelmap = open(
-                "/run/current-system/sw/share/systemd/kbd-model-map", 'r')
-            kbd = kbdmodelmap.readlines()
-            out = []
-            for line in kbd:
-                if line.startswith("#"):
-                    continue
-                out.append(line.split())
-            # Find rows with same layout
-            find = []
-            for row in out:
-                if gs.value("keyboardLayout") == row[1]:
-                    find.append(row)
-            if find != []:
-                vconsole = find[0][0]
-            else:
-                vconsole = ""
-            if gs.value("keyboardVariant") is not None:
-                variant = gs.value("keyboardVariant")
-            else:
-                variant = "-"
-            # Find rows with same variant
-            for row in find:
-                if variant in row[3]:
-                    vconsole = row[0]
-                    break
-                # If none found set to "us"
-            if vconsole != "" and vconsole != "us" and vconsole is not None:
-                try:
-                    subprocess.check_output(
-                        ["pkexec", "loadkeys", vconsole], stderr=subprocess.STDOUT)
-                    cfg += cfgconsole
-                    catenate(variables, "vconsole", vconsole)
-                except subprocess.CalledProcessError as e:
-                    libcalamares.utils.error("loadkeys: {}".format(e.output))
-                    libcalamares.utils.error(
-                        "vconsole value: {}".format(vconsole))
-                    libcalamares.utils.error("Setting vconsole keymap to {} will fail, using default".format(
-                        gs.value("keyboardVConsoleKeymap")))
 
     if (gs.value("username") is not None):
         fullname = gs.value("fullname")
