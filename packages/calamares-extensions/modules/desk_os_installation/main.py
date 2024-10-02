@@ -114,8 +114,6 @@ configuration_body = """
     extraGroups = [ @@groups@@ ];
   };
 
-  programs.firefox.enable = true;
-
   services.displayManager.autoLogin = {
     enable = true;
     user = "@@username@@";
