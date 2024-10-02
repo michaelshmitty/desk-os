@@ -197,8 +197,9 @@
 
   services.udev.packages = with pkgs; [gnome.gnome-settings-daemon];
 
+  programs.firefox.enable = true;
+
   environment.systemPackages = with pkgs; [
-    firefox
     gnomeExtensions.appindicator
     gnomeExtensions.arcmenu
     gnomeExtensions.dash-to-panel
