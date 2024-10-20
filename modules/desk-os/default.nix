@@ -173,6 +173,7 @@
               [(lib.gvariant.mkDictionaryEntry "id" "writer.desktop")]
               [(lib.gvariant.mkDictionaryEntry "id" "calc.desktop")]
               [(lib.gvariant.mkDictionaryEntry "id" "impress.desktop")]
+              [(lib.gvariant.mkDictionaryEntry "id" "org.gnome.Software.desktop")]
             ];
           };
 
