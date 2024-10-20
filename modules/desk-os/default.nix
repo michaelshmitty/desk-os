@@ -80,6 +80,10 @@
             picture-uri-dark = "file://${pkgs.gnome.gnome-backgrounds}/share/backgrounds/gnome/geometrics-d.jxl";
           };
 
+          "org/gnome/desktop/wm/preferences" = {
+            button-layout = ":minimize,maximize,close";
+          };
+
           "org/gnome/desktop/screensaver" = {
             picture-uri = "file://${pkgs.gnome.gnome-backgrounds}/share/backgrounds/gnome/geometrics-l.jxl";
           };
