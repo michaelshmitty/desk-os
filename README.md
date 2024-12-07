@@ -13,8 +13,9 @@ nix run github:nixup-io/desk-os
 ## Contact
 
 - E-mail: [info@nixup.io](mailto:info@nixup.io)
+- Bluesky: [Michael Smith (Neo)](https://bsky.app/profile/hacktheplanet.be)
 - X: [@michaelshmitty](https://x.com/michaelshmitty)
-- Fediverse: [@neo](https://social.hacktheplanet.be/@neo)
+- Mastodon: [@neo](https://social.hacktheplanet.be/@neo)
 
 ## Acknowledgements
 
