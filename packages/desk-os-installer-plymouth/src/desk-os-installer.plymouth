@@ -1,8 +1,0 @@
-[Plymouth Theme]
-Name=deskOS Installer
-Description=A theme that displays the deskOS installer logo
-ModuleName=script
-
-[script]
-ImageDir=/usr/share/plymouth/themes/desk-os-installer
-ScriptFile=/usr/share/plymouth/themes/desk-os-installer/desk-os-installer.script
