@@ -1,7 +1,3 @@
-# PLEASE NOTE
-Due to lack of interest I have taken down the deskOS website and the hosting of the large ISO image build artifacts for the demo's.
-If you are interested in this project, do not hesitate to contact me via https://michaelsmith.be.
-
 # deskOS - An easy to use, stable desktop operating system
 
 See https://nixup.io/desk-os/learn-more
