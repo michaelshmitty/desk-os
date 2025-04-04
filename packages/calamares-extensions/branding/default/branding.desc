@@ -18,7 +18,7 @@ strings:
     bootloaderEntryName: deskOS
     productUrl:          https://nixup.io
     supportUrl:          https://nixup.io
-    knownIssuesUrl:      https://github.com/nixup-io/desk-os/issues
+    knownIssuesUrl:      https://git.michaelsmith.be/m/desk-os/issues
     releaseNotesUrl:     https://nixup.io
     donateUrl:           https://nixup.io
 images:

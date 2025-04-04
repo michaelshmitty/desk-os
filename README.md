@@ -7,7 +7,7 @@ See https://nixup.io/desk-os/learn-more
 If you are running NixOS or you have the [Nix package manager](https://nixos.org/) installed, you can easily run a deskOS demo from this flake:
 
 ```sh
-nix run github:nixup-io/desk-os
+nix run git+https://git.michaelsmith.be/m/desk-os.git
 ```
 
 ## Contact

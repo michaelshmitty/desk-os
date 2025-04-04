@@ -54,9 +54,9 @@ flake = f"""
   description = "deskOS flake";
 
   inputs = {{
-    nixpkgs.url = "github:nixup-io/nixpkgs-desk-os/stable";
+    nixpkgs.url = "git+https://git.michaelsmith.be/m/nixpkgs-desk-os.git";
     desk-os = {{
-      url = "github:nixup-io/desk-os";
+      url = "git+https://git.michaelsmith.be/m/desk-os.git";
       inputs.nixpkgs.follows = "nixpkgs";
     }};
   }};
