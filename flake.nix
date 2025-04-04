@@ -2,7 +2,7 @@
   description = "deskOS - An easy to use, stable desktop operating system";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.05";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.11";
   };
 
   outputs = {

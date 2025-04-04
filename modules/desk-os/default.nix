@@ -68,16 +68,14 @@
     pulse.enable = true;
   };
 
-  i18n.inputMethod.enabled = "ibus";
-
   programs.dconf.enable = true;
   programs.dconf.profiles = {
     user.databases = [
       {
         settings = {
           "org/gnome/desktop/background" = {
-            picture-uri = "file://${pkgs.gnome.gnome-backgrounds}/share/backgrounds/gnome/geometrics-l.jxl";
-            picture-uri-dark = "file://${pkgs.gnome.gnome-backgrounds}/share/backgrounds/gnome/geometrics-d.jxl";
+            picture-uri = "file://${pkgs.gnome-backgrounds}/share/backgrounds/gnome/geometrics-l.jxl";
+            picture-uri-dark = "file://${pkgs.gnome-backgrounds}/share/backgrounds/gnome/geometrics-d.jxl";
           };
 
           "org/gnome/desktop/wm/preferences" = {
@@ -85,7 +83,7 @@
           };
 
           "org/gnome/desktop/screensaver" = {
-            picture-uri = "file://${pkgs.gnome.gnome-backgrounds}/share/backgrounds/gnome/geometrics-l.jxl";
+            picture-uri = "file://${pkgs.gnome-backgrounds}/share/backgrounds/gnome/geometrics-l.jxl";
           };
 
           "org/gnome/desktop/interface" = {
@@ -200,7 +198,7 @@
     desktopManager.gnome.enable = true;
   };
 
-  services.udev.packages = with pkgs; [gnome.gnome-settings-daemon];
+  services.udev.packages = with pkgs; [gnome-settings-daemon];
 
   programs.firefox.enable = true;
 
@@ -217,7 +215,7 @@
 
   environment.gnome.excludePackages = with pkgs; [
     pkgs.gnome-tour
-    pkgs.gnome.epiphany
+    pkgs.epiphany
   ];
 
   # Fix scaling issues with electron apps
