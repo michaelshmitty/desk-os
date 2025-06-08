@@ -1,7 +1,5 @@
 # deskOS - An easy to use, stable desktop operating system
 
-See https://nixup.io/desk-os/learn-more
-
 ## Run a deskOS demo in a virtual machine
 
 If you are running NixOS or you have the [Nix package manager](https://nixos.org/) installed, you can easily run a deskOS demo from this flake:
